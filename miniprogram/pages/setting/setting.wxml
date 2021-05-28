@@ -1,0 +1,2 @@
+<view class="setfont">设置</view>
+<van-cell is-link title="查看历史记录" link-type="navigateTo" url="/pages/history/history" />

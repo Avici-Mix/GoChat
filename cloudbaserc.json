@@ -1,0 +1,14 @@
+{
+  "envId": "zzb001-v28kf-3g661pzg2b8afb22",
+  "framework": {
+    "plugins": {
+      "web": {
+        "use": "@cloudbase/framework-plugin-website",
+        "input": {
+          "cloudPath": "/gochathtml",
+          "outputPath": "./html"
+        }
+      }
+    }
+  }
+}

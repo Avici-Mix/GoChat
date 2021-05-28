@@ -1,0 +1,30 @@
+/* miniprogram/pages/index/index.wxss */
+.userimage{
+  display: flex;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  margin-top: 70px;
+  border-radius: 50%;
+  background-size: cover;
+  background-color: rgb(175, 175, 175);
+}
+
+.gochat{
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  font-size: 30px;
+}
+
+.name{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  margin-top: 15px;
+}
+
+.van-leave-to-class {
+  background-color: red;
+  transform: rotate(-360deg) translate3d(-100%, -100%, 0);
+}

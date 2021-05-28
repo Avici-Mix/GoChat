@@ -1,0 +1,4 @@
+<!--miniprogram/pages/index/index.wxml-->
+<view class="gochat">Let's GoChat!</view>
+<button open-type="getUserInfo" bindgetuserinfo="init" class="userimage" style="background-image: url({{userimage}})" size="default"></button>
+<view class="name">{{username}}</view>

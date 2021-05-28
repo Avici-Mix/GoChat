@@ -1,0 +1,192 @@
+
+
+
+.gochat {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex-basis: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  background-color: #F6F6F6;
+  border-bottom: 1px solid #F6F6F6;
+  padding: 20rpx 0 30rpx;
+  font-size: 30rpx;
+}
+
+
+
+.setting{
+  width: 20px;
+  height: 20px;
+  display: flex;
+  margin-left: 290px;
+}
+
+.body {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  background: rgb(252, 250, 250);
+  padding-bottom: 16rpx;
+}
+
+.selfmsg {
+  flex: 1;
+  display: flex;
+  position: relative;
+  margin: 12rpx 0;
+  flex-direction: row-reverse;
+  text-align: end;
+}
+
+.othermsg {
+  flex: 1;
+  display: flex;
+  margin: 12rpx 0;
+  text-align: start;
+}
+
+.userimge {
+  top: 5rpx;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 5rpx;
+  margin: 15rpx;
+}
+
+.message{
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.username {
+  margin-top: 5px;
+  font-size: 12px;
+  
+}
+
+
+
+.msgtext {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  padding-right: 9px;
+  padding-left: 9px;
+  background-color:white;
+}
+
+.msgpicture {
+  max-width: 240rpx;
+  max-height: 240rpx;
+}
+
+.msgvideo {
+  max-width: 240rpx;
+  max-height: 240rpx;
+}
+
+
+.msgvoice {
+  border-radius: 10rpx;
+  background-color: white;
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.ico {
+  margin-top: 4px;
+  margin-left: 9px;
+  width: 23px;
+  height: 23px;
+  margin-right: 70px;
+}
+
+
+.footer {
+  bottom: 0;
+  flex: 1;
+  flex-basis: fit-content;
+  background-color: #F6F6F6;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #ddd;
+  padding-top: 20rpx;
+  padding-bottom: 15rpx;
+  padding-left: 10rpx;
+  padding-right: 15rpx;
+}
+
+
+.input {
+  display: flex;
+  flex: 1;
+  font-size: 16px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.sendimage {
+  width: 50rpx;
+  height: 50rpx;
+  align-self: center;
+  margin-left: 7px;
+}
+
+.voice {
+  width: 70rpx;
+  height: 70rpx;
+  align-self: center;
+  margin-right: 5px;
+  margin-left: 2px;
+}
+
+.start_voice {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.stopvoice {
+  display: flex;
+  flex-direction: row;
+}
+
+.fail_voice {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.suc_voice {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-size: cover;
+}
+
+.voice_text{
+  color: grey;
+  display: flex;
+  font-size: small;
+  margin-top: 20px;
+  justify-content: center;
+}

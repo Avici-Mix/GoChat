@@ -1,0 +1,6 @@
+.setfont{
+  display: flex;
+  justify-content: center;
+  margin-top: 7px;
+  margin-bottom: 8px;
+}

@@ -1,0 +1,47 @@
+<view class='gochat'>
+<view class="header">
+	<image class="setting" src="../../images/setting.png" bindtap="urlsetting"></image>
+</view>
+	<scroll-view class="body" style='height:{{scroll_height}}rpx' scroll-y  scroll-top="{{scrollTop}}" scroll-with-animation="{{scrollWithAnimation}}"
+    scroll-into-view="{{scrollToMessage}}"
+    bindscrolltoupper="onScrollToUpper" >
+		<view wx:for="{{items}}" wx:key="index" class="{{openID == item._openid ? 'selfmsg' : 'othermsg'}}">
+			<image class="userimge" src="{{item.userimage}}"></image>
+			<view class="message">
+				<view class="username">{{item.username}}</view>
+				<view class="msgtext" wx:if="{{item.msgType === 'text'}}">{{item.textContent}}</view>
+				<image class="msgpicture" wx:if="{{item.msgType === 'image'}}" src="{{item.tempFilePath || item.fileID}}" data-fileID="{{item.fileID}}" bindtap="previewImage" ></image>
+				<video class="msgvideo" wx:if="{{item.msgType === 'video'}}" src="{{item.tempFilePath || item.fileID}}"  ></video>
+				<view class="msgvoice" wx:if="{{item.msgType === 'voice'}}">     
+					<image class="ico" src="../../images/voicebind.png" bindtap="playvoice" data-id="{{item.fileID}}"></image>
+				</view>
+			</view>
+		</view>
+
+
+	</scroll-view>
+	<view class="footer" style='bottom:0px;'>
+		<image src="../../images/voice1.png" class="voice" bindtap="sendvoice"></image>
+		<input class="input" type="text" confirm-type="send" bindconfirm="sendtext" cursor-spacing="20" value="{{Inputtext}}">
+		</input>
+		<image src="../../images/add.png" class="sendimage" mode="scaleToFill" bindtap="onAdd">
+		</image>
+	</view>
+	<van-popup show="{{ showgrid }}" round position="bottom" custom-style="height: 20%" bind:close="onClose">
+		<van-grid column-num="3" square>
+			<van-grid-item icon="photo-o" text="图片" bindtap='sendpic' />
+			<van-grid-item icon="play-circle-o" text="视频" bindtap='sendvid' />
+			<van-grid-item icon="label-o" text="文件" />
+		</van-grid>
+	</van-popup>
+	<van-popup show="{{showstart}}" round position="bottom" custom-style="height: 36%" bind:close="onClose">
+		<button class="start_voice" style="background-image: url({{voice2}})" bindtap="startvoice" ></button>
+	</van-popup>
+	<van-popup show="{{showend}}" round position="bottom" custom-style="height: 36%" bind:close="onClose">
+		<view class='stopvoice'>
+			<button class="suc_voice" style="background-image: url({{truepic}})" bindtap="completev"></button>
+			<button class="fail_voice" style="background-image: url({{falsepic}})" bindtap="cancelv"></button>
+		</view>
+		<view class="voice_text">正在录音中...点击可完成/取消录音</view>
+	</van-popup>
+</view>

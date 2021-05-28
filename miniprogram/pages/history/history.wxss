@@ -1,0 +1,75 @@
+/* miniprogram/pages/history/history.wxss */
+page{
+background-color: rgb(240, 240, 240);
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  margin: 12rpx 0;
+  text-align: start;
+ 
+}
+
+.userimge {
+  top: 5rpx;
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 5rpx;
+  margin: 15rpx;
+}
+
+.message{
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  margin-top: 5px;
+  font-size: 12px;
+  
+}
+
+
+
+.msgtext {
+  padding-top: 9px;
+  padding-bottom: 9px;
+  padding-right: 9px;
+  padding-left: 9px;
+  background-color:white;
+}
+
+.msgpicture {
+  max-width: 240rpx;
+  max-height: 240rpx;
+}
+
+.msgvideo {
+  max-width: 240rpx;
+  max-height: 240rpx;
+}
+
+
+.msgvoice {
+  font-size: small;
+  color:  rgb(143, 143, 143);
+}
+
+.ico {
+  margin-top: 4px;
+  margin-left: 9px;
+  width: 23px;
+  height: 23px;
+  margin-right: 70px;
+}
+
+.date{
+  font-size: small;
+  color: rgb(155, 154, 154);
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-right: 5px;
+  margin-left: auto;
+}

@@ -1,0 +1,341 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>GoChat聊天室</title>
+	<meta name="viewport"
+		content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<script src="https://imgcache.qq.com/qcloud/tcbjs/1.5.1/tcb.js"></script>
+	<script src="//imgcache.qq.com/qcloud/cloudbase-js-sdk/1.1.1/cloudbase.full.js">
+		import cloudbase from "@cloudbase/js-sdk";
+	</script>
+</head>
+
+<body>
+
+	<div class="top">
+		<div class="top-title">GoChat 聊天室</div>
+		<div class="sign_log">
+			<div class="top-login" id='sign'>
+				<input class="top-login-input" id="log-emailad" placeholder="请填写邮箱地址"></input>
+				<input class="top-login-input" id="log-password" placeholder="请输入登录密码"></input>
+				<button class="top-login-btn" id="login-in" onclick="login()">点击登录</button>
+				<button class="top-login-btn" id="login-out" style="display: none;" onclick="loginout()">退出登录</button>
+			</div>
+			<div class="top-login" id='login'>
+				<input class="top-login-input" id="sign-emailad" placeholder="请填写邮箱地址"></input>
+				<input class="top-login-input" id="sign-password" placeholder="请设置登录密码"></input>
+				<button class="top-login-btn" id="login-in" onclick="sign()">点击注册</button>
+				<div class="ex">密码位数不能低于8位，且需含有字母</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<div id="list">
+
+	</div>
+
+	<div id="preview" style="display: none;" onclick="hidepreview()">
+		<img id="preview-img"></img>
+	</div>
+</body>
+
+<script>
+	let app = null
+	let openid = null;
+	initTcb(() => {
+		loadlist();
+	});
+	//登录函数，主要根据用户码进行验证登录
+	//在这里主要为了练习使用匿名登录和自定义登录两种登录方式，匿名登录时没有帖子的删除功能。
+	function initTcb(success = () => { }) {
+		app = tcb.init({
+			env: 'zzb001-v28kf'
+		});
+		if (getQueryVariable('unumber') == false) {
+			const auth = app.auth();
+			auth.signInAnonymously().then(() => {
+				auth.getLoginState().then((e) => {
+					console.log('匿名登录成功，初始化完成！');
+					success();
+				});
+			}).catch(err => {
+				console.log('初始化失败', err)
+			});
+		} else {
+			login();
+		}
+	}
+
+	function loadlist() {
+		const db = app.database();
+		db.collection('gochat').get()
+			.then(async (res) => {
+				console.log('res is--', res);
+				let htmls = '';
+				for (let item of res.data) {
+					htmls += '<div class="item"><div class="item-author"><img class="item-author-img" src="' + item.userimage +
+						'"></img>' +
+						'<div class="item-author-name">' + item.username + '</div></div>'
+					if (item.msgType == 'text') {
+						htmls += '<div class="item-text"><p>' + item
+							.textContent + '</p></div>'
+					} else if (item.msgType == 'image') {
+						let tempimg = await cloudtohttp(item.fileID);
+						htmls += '<img class="image" onclick="preview(\'' + tempimg + '\')" src="' + tempimg +
+							'"></img>';
+					} else if (item.msgType == 'video') {
+						let tempvideo = await cloudtohttp(item.fileID);
+						htmls += '<video class="voice" controls="controls" src="' + tempvideo + '"></video>';
+					}else{
+						let tempvoice = await cloudtohttp(item.fileID);
+						htmls += '<audio  controls="controls" src="' + tempvoice + '"></audio>';
+					}
+					htmls += '</div><div class="item-info"><div class="item-info-time">' + (item.sendTime) +
+						'</div>';
+					htmls += '</div></div>';
+				}
+
+
+				document.getElementById('list').innerHTML = htmls;
+			})
+	}
+
+
+
+	//登录函数，主要根据用户码进行验证登录
+	//在这里主要为了练习使用匿名登录和自定义登录两种登录方式，匿名登录时没有帖子的删除功能。
+	function sign(success = () => { }) {
+		const app = cloudbase.init({
+			env: 'zzb001-v28kf'
+		});
+		if (getQueryVariable('unumber') == false) {
+			const auth = app.auth();
+			const email = document.getElementById("sign-emailad").value
+			const password = document.getElementById("sign-password").value
+			auth.signUpWithEmailAndPassword(email, password).then(() => {
+				console.log('邮箱注册成功');
+				alert('注册成功！请前往邮箱点击链接后即可登录！')
+				document.getElementById('sgin').style = "display:none;";
+			});
+		}
+	}
+
+	function login() {
+		const app = cloudbase.init({
+			env: 'zzb001-v28kf'
+		});
+		const auth = app.auth();
+		const email = document.getElementById("log-emailad").value
+		const password = document.getElementById("log-password").value
+		auth.signInWithEmailAndPassword(email, password).then((loginState) => {
+			console.log('邮箱登录成功');
+			alert('登录成功！')
+			document.getElementById('login').style = "display:none;";
+		});
+	}
+
+
+
+	//工具：预览图片
+	function preview(url) {
+		document.getElementById('preview-img').src = url;
+		document.getElementById('preview').style = "";
+	}
+
+	function hidepreview() {
+		document.getElementById('preview').style = "display: none;";
+	}
+	//工具：文件cloud转url存储
+	async function cloudtohttp(src) {
+		let contenturl = (await app.getTempFileURL({
+			fileList: [src]
+		})).fileList[0].download_url;
+		console.log(contenturl);
+		return contenturl;
+	}
+	//工具：get请求函数
+	function calls(obj) {
+		let xml = new XMLHttpRequest();
+		let url = obj.url + '?';
+		for (let item in obj.data) {
+			url += (item + '=' + obj.data[item] + '&');
+		}
+		xml.open('GET', url, true);
+		xml.send();
+		xml.onreadystatechange = function () {
+			if (xml.readyState === 4 && xml.status === 200) {
+				obj.success(JSON.parse(xml.responseText))
+			} else {
+				obj.fail(xml.status);
+			}
+		}
+	}
+	//工具：获得url参数
+	function getQueryVariable(variable) {
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		for (var i = 0; i < vars.length; i++) {
+			var pair = vars[i].split("=");
+			if (pair[0] == variable) {
+				return pair[1];
+			}
+		}
+		return (false);
+	}
+</script>
+<style>
+	body {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		margin: 0;
+		background-color: lightslategray;
+		flex-direction: column;
+	}
+
+	::-webkit-scrollbar {
+		display: none;
+	}
+
+	.top {
+		width: 100%;
+		max-width: 960px;
+		margin: 0 auto;
+	}
+
+	.top-title {
+		line-height: 80px;
+		font-size: 32px;
+		font-weight: bold;
+		max-width: 365px;
+		padding: 5px;
+		float: left;
+	}
+
+	.sign_log {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.ex {
+		font-size: small;
+	}
+
+	.top-login {
+		display: flex;
+		width: 250px;
+		margin-top: 30px;
+		margin-left: auto;
+		margin-bottom: 10px;
+		flex-direction: column;
+	}
+
+	.top-login-input {
+		height: 40px;
+		font-size: 14px;
+		border: none;
+		padding: 0 10px;
+		width: 160px;
+		margin-top: 3px;
+		margin-bottom: 3px;
+	}
+
+	.top-login-btn {
+		margin-top: 3px;
+		height: 30px;
+		border: none;
+		width: 160px;
+	}
+
+	#list {
+		width: 100%;
+		max-width: 960px;
+		height: 100%;
+		overflow: auto;
+		margin: auto;
+		background-color: lightslategray;
+	}
+
+	#preview {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: flex;
+	}
+
+	#preview-img {
+		margin: auto;
+		object-fit: contain;
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	.item {
+		background-color: rgb(218, 231, 245);
+		width: calc(100% - 30px);
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 7px;
+		padding: 10px 15px;
+	}
+
+
+	.item-author {
+		display: flex;
+		color: #000000;
+	}
+
+	.item-author-img {
+		width: 30px;
+		height: 30px;
+	}
+
+	.voice{
+		margin: 5px,5px;
+	}
+
+	.item-author-name {
+		line-height: 30px;
+		font-size: 14px;
+		margin-left: 10px;
+		width: 100%;
+	}
+
+	.item-text {
+		font-size: 13px;
+		color: #070707;
+		margin: 10px auto;
+		line-height: 30px;
+		background-color: white;
+		padding: 5px,5px;
+	}
+
+	.item-info {
+		display: flex;
+		font-size: 14px;
+		color: black;
+		padding-left: 10px;
+		background-color:rgb(218, 231, 245);
+	}
+
+	.item-info-time {
+		margin-right: auto;
+	}
+
+
+
+	.image {
+		margin-top: 7px;
+		height: 150px;
+		width: 150px;
+		overflow: hidden;
+		object-fit: cover;
+	}
+</style>
+
+</html>

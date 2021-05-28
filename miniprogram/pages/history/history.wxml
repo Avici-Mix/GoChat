@@ -1,0 +1,14 @@
+<!--miniprogram/pages/history/history.wxml-->
+<view wx:for="{{items}}" wx:key="index" class="main">
+	<image class="userimge" src="{{item.userimage}}"></image>
+	<view class="message">
+		<view class="username">{{item.username}}</view>
+		<view class="msgtext" wx:if="{{item.msgType === 'text'}}">{{item.textContent}}</view>
+		<image class="msgpicture" wx:if="{{item.msgType === 'image'}}" src="{{item.tempFilePath || item.fileID}}"></image>
+		<video class="msgvideo" wx:if="{{item.msgType === 'video'}}" src="{{item.tempFilePath || item.fileID}}"></video>
+		<view class="msgvoice" wx:if="{{item.msgType === 'voice'}}">
+			语音历史消息暂不支持查看
+		</view>
+	</view>
+  <view class="date">{{item.sendTime}}</view>
+</view>
